@@ -45,3 +45,5 @@ print(chart);
 // 5. Git Add .
 // 6. Git Commit -m "scripts for googleEarthEngine"
 // 7. Git Push
+
+//refer to lines 5, 6 and 21. where it says "High_Closed_Grassland" replace with "High_closed_shrubland", "wetland", "tall_open_grassland" or "tall_closed_grassland
