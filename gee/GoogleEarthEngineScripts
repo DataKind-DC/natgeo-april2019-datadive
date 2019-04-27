@@ -1,0 +1,47 @@
+// Load a FeatureCollection from a Fusion Table.
+
+
+// Print and display the FeatureCollection.
+print(High_Closed_Grassland);
+Map.addLayer(High_Closed_Grassland, {}, 'From Fusion Table');
+
+
+// Define a function that will add an NDVI band to a Modis.
+var addNDVI = function(image) {
+  var ndvi = image.normalizedDifference(['sur_refl_b02', 'sur_refl_b01']).rename('NDVI');
+  return image.addBands(ndvi);
+};
+
+// Filter and map the function over the collection.
+var withNDVI = modis.filterDate('2017-01-01', '2017-12-31').map(addNDVI);
+
+// Make a chart.
+var chart = ui.Chart.image.series({
+  imageCollection: withNDVI.select('NDVI'),
+  region: High_Closed_Grassland,
+  reducer: ee.Reducer.first(),
+  scale: 30
+});
+
+// Define custom options for the chart. See:
+// https://developers.google.com/chart/interactive/docs/reference
+var options = {
+  title: 'NDVI over time',
+  hAxis: { title: 'time' },
+  vAxis: { title: 'NDVI' },
+  series: {
+    0: { color: 'green' }
+  }
+};
+
+// Set the options of the chart and print it.
+chart = chart.setOptions(options);
+print(chart);
+
+// 1. Download Atom Text Editor
+// 2. Copy and paste lines 1 - 40 into Atom
+// 3. Save Atom File into Desktop/GoogleEarthScripts Folder
+// 4. From the Terminal, go to the GoogleEarthScripts Folder(You might have to download Git command line tools)
+// 5. Git Add .
+// 6. Git Commit -m "scripts for googleEarthEngine"
+// 7. Git Push
