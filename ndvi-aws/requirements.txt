@@ -5,7 +5,6 @@ geojson==2.4.1
 geomet==0.2.0.post2
 html2text==2018.1.9
 idna==2.8
-pkg-resources==0.0.0
 requests==2.21.0
 sentinelsat==0.13
 six==1.12.0

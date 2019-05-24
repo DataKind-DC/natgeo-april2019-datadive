@@ -15,7 +15,7 @@ def get_products_list(start=date(2018, 1, 1), end=date(2018, 12, 31)):
     print("Found "+str(len(products))+" products matching search criteria")
     return products
 
-        
+
 def get_band_uris(product_uuid, product_dict):
     base_url = "https://scihub.copernicus.eu/dhus/odata/v1/"
     url = f"{base_url}Products('{product_uuid}')/Nodes('{product_dict['identifier']}.SAFE')/Nodes('GRANULE')/Nodes?$format=json"
@@ -41,18 +41,13 @@ def new_image_name(original_name, uuid):
 
 if __name__ == "__main__":
     products = get_products_list()
-    for p in products:
-        puuid = p
+    for puuid in products:
+        print("Working on product:", puuid)
         product = products[puuid]
         all_bands = get_band_uris(puuid, product)
-        nvdi_bands = {band: all_bands[band] for band in all_bands.keys() if 'B04.jp2' in band or 'B08.jp2' in band}
+        nvdi_bands = {band: all_bands[band] for band in all_bands.keys() if 'B04.jp2' in band or 'B08.jp2' in band or 'RCI.jp2' in band}
         for img in nvdi_bands:
             new_name = new_image_name(img, puuid)
-            print(new_name, nvdi_bands[img])
-#    session = requests.Session()
-#    session.auth = (os.environ.get('COPUSER'), os.environ.get('COPPASS'))
-#    response = session.get(r2[img]+'/$value')
-#    with open(new_name, 'wb') as f:
-#        f.write(response.text)
-#    break
+            with open("tilelist.txt", 'a') as f:
+                f.write(f"{new_name}\t{nvdi_bands[img]}/$value\n")
 
